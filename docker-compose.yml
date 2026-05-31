@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mynotes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: mynotes
+      DB_USER: postgres
+      DB_PASS: postgres
+    ports:
+      - "8080:8080"
+
+volumes:
+  db-data:
